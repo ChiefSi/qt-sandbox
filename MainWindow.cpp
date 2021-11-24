@@ -1,15 +1,23 @@
 #include "MainWindow.h"
+#include "ui_MainWindow.h"
 
 #include <QtWidgets>
-
-MainWindow::MainWindow()
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui_(new Ui::MainWindow)
 {
-  // setCentralWidget();
+    ui_->setupUi(this);
 
   createActions();
   createStatusBar();
 
   readSettings();
+
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui_;
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

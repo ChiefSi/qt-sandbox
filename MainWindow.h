@@ -2,15 +2,18 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QPlainTextEdit>
-#include <QString>
+
+namespace Ui {
+class MainWindow;
+}
 
 class MainWindow : public QMainWindow
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  MainWindow();
+    explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow();
 
 protected:
   // Intercept close to offer save
@@ -26,6 +29,7 @@ private slots:
 private:
   void createActions();
   void createStatusBar();
+  void createDockWindows();
 
   void readSettings();
   void writeSettings();
@@ -33,6 +37,9 @@ private:
   bool maybeSave();
   void loadFile(const QString &fileName);
   bool saveFile(const QString &fileName);
+
+private:
+    Ui::MainWindow *ui;
 };
 
-#endif
+#endif // MAINWINDOW_H

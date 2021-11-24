@@ -12,6 +12,7 @@ set(CMAKE_AUTOUIC ON)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 set(FORMS
+  MainWindow.ui
 )
 
 set(SOURCES
