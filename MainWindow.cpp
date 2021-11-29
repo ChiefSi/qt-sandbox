@@ -2,18 +2,83 @@
 #include "ui_MainWindow.h"
 
 #include <QtWidgets>
+
+#include "ConfigSetupDialog.h"
+
+#include <iostream>
+
+#include "Ipv4SettingsPage.h"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui_(new Ui::MainWindow)
 {
+  // Ui should not be needed
     ui_->setupUi(this);
 
-  createActions();
-  createStatusBar();
+    // Setup page programatically rather than rely on content "hidden" in the UI xml
+    createActions();
+    createStatusBar();
 
-  readSettings();
+    // Settings should only need to apply to this top-level representation of the application
+    readSettings();
 
+    createCentralWidget();
+    createDockWindows();
 }
+
+void MainWindow::createDockWindows()
+{
+  createTreeDock();
+}
+
+void MainWindow::createTreeDock()
+{
+  QDockWidget* treeWindow = new QDockWidget("Configuration");
+  treeWindow->setWidget(tree());
+  addDockWidget(Qt::LeftDockWidgetArea, treeWindow);
+  viewMenu_->addAction(treeWindow->toggleViewAction());
+}
+
+void MainWindow::populateConfiguration(const ConfigSetupSettings& settings)
+{
+  // TODO populate tree
+  for (int i = 0; i < settings.numHighServers; ++i)
+  {
+    std::string serverName("High Server " + std::to_string(i));
+
+    ServerSettings serverSettings;
+    for (int j = 0; j < settings.numHighInterfaces; ++j)
+    {
+      std::string interfaceName("Interface " + std::to_string(j));
+      InterfaceSettings interfaceSettings;
+      serverSettings.interfaceMap[interfaceName] = interfaceSettings;
+    }
+
+    configuration_.highServerMap[serverName] = serverSettings;
+  }
+
+  for (int i = 0; i < settings.numLowServers; ++i)
+  {
+    std::string serverName("Low Server " + std::to_string(i));
+
+    ServerSettings serverSettings;
+    for (int j = 0; j < settings.numLowInterfaces; ++j)
+    {
+      std::string interfaceName("Interface " + std::to_string(j));
+      InterfaceSettings interfaceSettings;
+      serverSettings.interfaceMap[interfaceName] = interfaceSettings;
+    }
+
+    configuration_.lowServerMap[serverName] = serverSettings;
+  }
+}
+
+void MainWindow::createCentralWidget()
+{
+  setCentralWidget(new Ipv4SettingsPage);
+}
+
 
 MainWindow::~MainWindow()
 {
@@ -35,8 +100,16 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::newConfiguration()
 {
-  if (maybeSave())
+  // TODO check if save requried... probably requires iterating and checking
+  // internal struct vs current referenced file?
+  ConfigSetupDialog dialog;
+  if (dialog.exec() == QDialog::Accepted)
   {
+    configSetupSettings_ = dialog.settings();
+
+    std::cout << configSetupSettings_ << std::endl;
+
+    populateConfiguration(configSetupSettings_);
   }
 }
 
@@ -67,8 +140,9 @@ void MainWindow::createActions()
 {
   QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
   QToolBar *fileToolBar = addToolBar(tr("File"));
-  const QIcon newIcon =
-      QIcon::fromTheme("document-new", QIcon(":/images/new.png"));
+  //const QIcon newIcon = QIcon::fromTheme("document-new", QIcon(":/images/new.png"));
+  const QIcon newIcon = QIcon::fromTheme("document-new");
+  //const QIcon newIcon = this->style()->standardIcon(QStyle::SP_FileDialogNewFolder);
   QAction *newAct = new QAction(newIcon, tr("&New"), this);
   newAct->setShortcuts(QKeySequence::New);
   newAct->setStatusTip(tr("New Configuration"));
@@ -76,8 +150,9 @@ void MainWindow::createActions()
   fileMenu->addAction(newAct);
   fileToolBar->addAction(newAct);
 
-  const QIcon openIcon =
-      QIcon::fromTheme("document-open", QIcon(":/images/open.png"));
+  //const QIcon openIcon = QIcon::fromTheme("document-open", QIcon(":/images/open.png"));
+  const QIcon openIcon = QIcon::fromTheme("document-open");
+  //const QIcon openIcon = this->style()->standardIcon(QStyle::SP_DialogOpenButton);
   QAction *openAct = new QAction(openIcon, tr("&Open..."), this);
   openAct->setShortcuts(QKeySequence::Open);
   openAct->setStatusTip(tr("Open Configuration"));
@@ -85,8 +160,9 @@ void MainWindow::createActions()
   fileMenu->addAction(openAct);
   fileToolBar->addAction(openAct);
 
-  const QIcon saveIcon =
-      QIcon::fromTheme("document-save", QIcon(":/images/save.png"));
+  //const QIcon saveIcon = QIcon::fromTheme("document-save", QIcon(":/images/save.png"));
+  const QIcon saveIcon = QIcon::fromTheme("document-save");
+  //const QIcon saveIcon = this->style()->standardIcon(QStyle::SP_DialogSaveButton);
   QAction *saveAct = new QAction(saveIcon, tr("&Save"), this);
   saveAct->setShortcuts(QKeySequence::Save);
   saveAct->setStatusTip(tr("Save the document to disk"));
@@ -101,6 +177,8 @@ void MainWindow::createActions()
       fileMenu->addAction(exitIcon, tr("E&xit"), this, &QWidget::close);
   exitAct->setShortcuts(QKeySequence::Quit);
   exitAct->setStatusTip(tr("Exit the application"));
+
+  viewMenu_ = menuBar()->addMenu(tr("&View"));
 
   QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
   QAction *aboutAct =
@@ -143,6 +221,7 @@ void MainWindow::writeSettings()
 
 bool MainWindow::maybeSave()
 {
+    /*
   const QMessageBox::StandardButton ret = QMessageBox::warning(
       this, tr("Application"),
       tr("TODO Check if unsaved modifications...\nDo you want to save your "
@@ -159,6 +238,8 @@ bool MainWindow::maybeSave()
   }
 
   return true;
+  */
+    return true;
 }
 
 void MainWindow::loadFile(const QString &fileName)
@@ -206,4 +287,9 @@ bool MainWindow::saveFile(const QString &fileName)
 
   statusBar()->showMessage(tr("File saved"), 2000);
   return true;
+}
+
+QTreeWidget* MainWindow::tree()
+{
+  return &tree_;
 }

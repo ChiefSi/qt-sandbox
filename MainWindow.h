@@ -2,6 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTreeWidget>
+#include <QAction>
+
+#include "ConfigSetupSettings.h"
+#include "Configuration.h"
 
 namespace Ui {
 class MainWindow;
@@ -29,7 +34,11 @@ private slots:
 private:
   void createActions();
   void createStatusBar();
+  void createCentralWidget();
   void createDockWindows();
+  void createTreeDock();
+
+  void populateConfiguration(const ConfigSetupSettings& settings);
 
   void readSettings();
   void writeSettings();
@@ -38,8 +47,14 @@ private:
   void loadFile(const QString &fileName);
   bool saveFile(const QString &fileName);
 
+  QTreeWidget* tree();
+
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow *ui_;
+    QTreeWidget tree_;
+    ConfigSetupSettings configSetupSettings_;
+    Configuration configuration_;
+    QMenu* viewMenu_;
 };
 
 #endif // MAINWINDOW_H

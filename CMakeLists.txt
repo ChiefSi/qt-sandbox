@@ -11,17 +11,42 @@ set(CMAKE_AUTOUIC ON)
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
+set(HEADERS
+  MainWindow.h
+  ConfigSetupDialog.h
+  ConfigSetupSettings.h
+  Configuration.h
+  DnsDataModel.h
+  EthernetSettings.h
+  Ipv4Settings.h
+  InterfaceSettings.h
+  EthernetSettingsPage.h
+  Ipv4SettingsPage.h
+  DnsItemDelegate.h
+  )
+
 set(FORMS
   MainWindow.ui
-)
+  ConfigSetupDialog.ui
+  EthernetSettingsPage.ui
+  Ipv4SettingsPage.ui
+  )
 
 set(SOURCES
   MainWindow.cpp
+  ConfigSetupDialog.cpp
+  EthernetSettingsPage.cpp
+  Ipv4SettingsPage.cpp
+  DnsDataModel.cpp
+  DnsItemDelegate.cpp
 )
 
 set(RESOURCES
   application.qrc
 )
+
+# Custom target to force header-only display in CMake-aware IDEs
+add_custom_target(ide-headers SOURCES ${HEADERS})
 
 add_executable(qt-sandbox qt-sandbox.cpp ${FORMS} ${RESOURCES} ${SOURCES})
 target_link_libraries(qt-sandbox PRIVATE Qt5::Widgets)

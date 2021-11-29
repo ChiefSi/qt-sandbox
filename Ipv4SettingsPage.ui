@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Ipv4SettingsPage</class>
+ <widget class="QWidget" name="Ipv4SettingsPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>710</width>
+    <height>406</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="7" column="0">
+    <widget class="QTableView" name="routesTableView"/>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="dnsLabel">
+     <property name="text">
+      <string>DNS</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QRadioButton" name="methodAutomatic">
+       <property name="text">
+        <string>Automatic (DHCP)</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">methodGroup</string>
+       </attribute>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="methodManual">
+       <property name="text">
+        <string>Manual</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">methodGroup</string>
+       </attribute>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="methodDisabled">
+       <property name="text">
+        <string>Disabled</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">methodGroup</string>
+       </attribute>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="addressesLabel">
+     <property name="text">
+      <string>Addresses</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="routesLabel">
+     <property name="text">
+      <string>Routes</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QTableView" name="addressesTableView"/>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="methodLabel">
+     <property name="text">
+      <string>Method</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QTableView" name="dnsTableView"/>
+   </item>
+   <item row="8" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+ <buttongroups>
+  <buttongroup name="methodGroup"/>
+ </buttongroups>
+</ui>
