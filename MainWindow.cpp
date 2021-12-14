@@ -9,10 +9,15 @@
 
 #include "Ipv4SettingsPage.h"
 
+#include <QScreen>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui_(new Ui::MainWindow)
 {
+	QScreen* screen = QGuiApplication::primaryScreen();
+	auto s = screen->availableSize();
+	std::cout << s.width() << "x" << s.height() << std::endl;
   // Ui should not be needed
     ui_->setupUi(this);
 
