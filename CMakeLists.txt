@@ -23,6 +23,8 @@ set(HEADERS
   EthernetSettingsPage.h
   Ipv4SettingsPage.h
   DnsItemDelegate.h
+  ConfigTreeItem.h
+  ConfigTreeModel.h
   )
 
 set(FORMS
@@ -39,6 +41,8 @@ set(SOURCES
   Ipv4SettingsPage.cpp
   DnsDataModel.cpp
   DnsItemDelegate.cpp
+  ConfigTreeItem.cpp
+  ConfigTreeModel.cpp
 )
 
 set(RESOURCES

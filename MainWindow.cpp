@@ -13,7 +13,8 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui_(new Ui::MainWindow)
+    ui_(new Ui::MainWindow),
+	configTreeModel_(this)
 {
 	QScreen* screen = QGuiApplication::primaryScreen();
 	auto s = screen->availableSize();
@@ -43,6 +44,9 @@ void MainWindow::createTreeDock()
   treeWindow->setWidget(tree());
   addDockWidget(Qt::LeftDockWidgetArea, treeWindow);
   viewMenu_->addAction(treeWindow->toggleViewAction());
+
+  tree_.setModel(&configTreeModel_);
+  //tree_.setItemDelegate(configTreeModel_.delegate());
 }
 
 void MainWindow::populateConfiguration(const ConfigSetupSettings& settings)
@@ -294,7 +298,7 @@ bool MainWindow::saveFile(const QString &fileName)
   return true;
 }
 
-QTreeWidget* MainWindow::tree()
+QTreeView* MainWindow::tree()
 {
   return &tree_;
 }

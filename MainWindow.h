@@ -7,6 +7,7 @@
 
 #include "ConfigSetupSettings.h"
 #include "Configuration.h"
+#include "ConfigTreeModel.h"
 
 namespace Ui {
 class MainWindow;
@@ -47,14 +48,15 @@ private:
   void loadFile(const QString &fileName);
   bool saveFile(const QString &fileName);
 
-  QTreeWidget* tree();
+  QTreeView* tree();
 
 private:
     Ui::MainWindow *ui_;
-    QTreeWidget tree_;
+    QTreeView tree_;
     ConfigSetupSettings configSetupSettings_;
     Configuration configuration_;
     QMenu* viewMenu_;
+	ConfigTreeModel configTreeModel_;
 };
 
 #endif // MAINWINDOW_H
