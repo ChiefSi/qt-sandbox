@@ -53,6 +53,13 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::createExampleConfigTree()
 {
 	auto* root = configTreeModel_.rootItem();
+	// Testing nested sections
+	auto* a = new ConfigSection("A");
+	auto* b = new ConfigSection("B");
+	auto* i = new Ipv4SettingsPage();
+	b->appendChild(i);
+	a->appendChild(b);
+	root->appendChild(a);
 	auto* network = new ConfigSection("Network");
 	root->appendChild(network);
 	{

@@ -4,10 +4,12 @@
 
 #include <QStackedWidget>
 
-class ConfigSection : public ConfigTreeItem
+class ConfigSection : public QWidget, public ConfigTreeItem
 {
+	Q_OBJECT
+
 public:
-	explicit ConfigSection(const QString& name);
+	explicit ConfigSection(const QString& name, QWidget* parent = nullptr);
 	~ConfigSection() override = default;
 
 	void activate() override;
