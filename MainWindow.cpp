@@ -1,5 +1,4 @@
 #include "MainWindow.h"
-#include "ui_MainWindow.h"
 
 #include <QtWidgets>
 
@@ -13,14 +12,11 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui_(new Ui::MainWindow),
-	configTreeModel_(this)
+	configTreeModel_(this, this)
 {
 	QScreen* screen = QGuiApplication::primaryScreen();
 	auto s = screen->availableSize();
 	std::cout << s.width() << "x" << s.height() << std::endl;
-  // Ui should not be needed
-    ui_->setupUi(this);
 
     // Setup page programatically rather than rely on content "hidden" in the UI xml
     createActions();
@@ -29,8 +25,35 @@ MainWindow::MainWindow(QWidget *parent) :
     // Settings should only need to apply to this top-level representation of the application
     readSettings();
 
-    createCentralWidget();
+	tree_.setModel(&configTreeModel_);
+
     createDockWindows();
+
+	QWidget* main = new QWidget();
+	stackedLayout_ = new QStackedLayout(main);
+
+	setCentralWidget(main);
+}
+
+int MainWindow::registerWidget(QWidget* widget)
+{
+	int index = stackedLayout_->addWidget(widget);
+	layoutMap_.insert(widget, index);
+	return index;
+}
+
+void MainWindow::displayWidget(QWidget* widget)
+{
+	auto it = layoutMap_.find(widget);
+	if (it == layoutMap_.end())
+	{
+		int index = registerWidget(widget);
+		stackedLayout_->setCurrentIndex(index);
+	}
+	else
+	{
+		stackedLayout_->setCurrentIndex(*it);
+	}
 }
 
 void MainWindow::createDockWindows()
@@ -44,9 +67,6 @@ void MainWindow::createTreeDock()
   treeWindow->setWidget(tree());
   addDockWidget(Qt::LeftDockWidgetArea, treeWindow);
   viewMenu_->addAction(treeWindow->toggleViewAction());
-
-  tree_.setModel(&configTreeModel_);
-  //tree_.setItemDelegate(configTreeModel_.delegate());
 }
 
 void MainWindow::populateConfiguration(const ConfigSetupSettings& settings)
@@ -85,13 +105,11 @@ void MainWindow::populateConfiguration(const ConfigSetupSettings& settings)
 
 void MainWindow::createCentralWidget()
 {
-  setCentralWidget(new Ipv4SettingsPage);
 }
 
 
 MainWindow::~MainWindow()
 {
-    delete ui_;
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

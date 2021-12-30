@@ -25,6 +25,10 @@ set(HEADERS
   DnsItemDelegate.h
   ConfigTreeItem.h
   ConfigTreeModel.h
+  ConfigTreeRootItem.h
+  ConfigPage.h
+  ConfigSection.h
+  StackedWidgetManager.h
   )
 
 set(FORMS
@@ -43,6 +47,10 @@ set(SOURCES
   DnsItemDelegate.cpp
   ConfigTreeItem.cpp
   ConfigTreeModel.cpp
+  ConfigTreeRootItem.cpp
+  ConfigPage.cpp
+  ConfigSection.cpp
+  StackedWidgetManager.cpp
 )
 
 set(RESOURCES
@@ -52,5 +60,8 @@ set(RESOURCES
 # Custom target to force header-only display in CMake-aware IDEs
 add_custom_target(ide-headers SOURCES ${HEADERS})
 
-add_executable(qt-sandbox qt-sandbox.cpp ${FORMS} ${RESOURCES} ${SOURCES})
-target_link_libraries(qt-sandbox PRIVATE Qt5::Widgets)
+add_library(sandbox ${FORMS} ${RESOURCES} ${SOURCES})
+target_link_libraries(sandbox PUBLIC Qt5::Widgets)
+
+add_executable(qt-sandbox qt-sandbox.cpp)
+target_link_libraries(qt-sandbox PRIVATE sandbox)

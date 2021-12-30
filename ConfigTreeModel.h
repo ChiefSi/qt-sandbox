@@ -4,11 +4,13 @@
 
 #include "ConfigTreeItem.h"
 
+class MainWindow;
+
 class ConfigTreeModel : public QAbstractItemModel
 {
 	Q_OBJECT
 public:
-	explicit ConfigTreeModel(QObject* parent = nullptr);
+	explicit ConfigTreeModel(MainWindow* mainWindow, QObject* parent = nullptr);
 	~ConfigTreeModel();
 
 	QVariant data(const QModelIndex& index, int role) const override;
@@ -18,9 +20,8 @@ public:
 	QModelIndex parent(const QModelIndex& index) const override;
 	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 	int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+	ConfigTreeItem* rootItem();
 
 private:
-	void setupModelData(ConfigTreeItem* parent);
-
 	ConfigTreeItem* rootItem_;
 };

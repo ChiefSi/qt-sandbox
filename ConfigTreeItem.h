@@ -38,8 +38,8 @@ public:
 		}
 	}
 
-	explicit ConfigTreeItem(const QString& name, ConfigTreeItem* parent = nullptr);
-	~ConfigTreeItem();
+	explicit ConfigTreeItem(const QString& name);
+	virtual ~ConfigTreeItem();
 
 	void appendChild(ConfigTreeItem* item);
 
@@ -56,9 +56,14 @@ public:
 
 	void setStatus(const Status& status);
 
+	virtual void onActivate();
+	virtual void displayWidget(QWidget* widget);
+
 private:
+	void setParent(ConfigTreeItem* parent);
+
 	QVector<ConfigTreeItem*> childItems_;
 	QString name_;
 	Status status_;
-	ConfigTreeItem* parent_;	
+	ConfigTreeItem* parent_ = nullptr;
 };

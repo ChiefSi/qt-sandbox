@@ -1,8 +1,7 @@
 #include "ConfigTreeItem.h"
 #include <iostream>
-ConfigTreeItem::ConfigTreeItem(const QString& name, ConfigTreeItem* parent)
+ConfigTreeItem::ConfigTreeItem(const QString& name)
 	: name_(name)
-	, parent_(parent)
 {
 }
 
@@ -14,6 +13,7 @@ ConfigTreeItem::~ConfigTreeItem()
 void ConfigTreeItem::appendChild(ConfigTreeItem* item)
 {
 	childItems_.append(item);
+	item->setParent(this);
 }
 
 ConfigTreeItem* ConfigTreeItem::child(int row)
@@ -78,3 +78,17 @@ void ConfigTreeItem::setStatus(const ConfigTreeItem::Status& status)
 	status_ = status;
 }
 
+void ConfigTreeItem::setParent(ConfigTreeItem* parent)
+{
+	parent_ = parent;
+}
+
+void ConfigTreeItem::onActivate()
+{
+
+}
+
+void ConfigTreeItem::displayWidget(QWidget* /*widget*/)
+{
+
+}

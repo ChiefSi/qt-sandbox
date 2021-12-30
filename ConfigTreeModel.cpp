@@ -1,10 +1,12 @@
 #include "ConfigTreeModel.h"
 
-ConfigTreeModel::ConfigTreeModel(QObject* parent)
+#include "ConfigTreeRootItem.h"
+#include "MainWindow.h"
+
+ConfigTreeModel::ConfigTreeModel(MainWindow* mainWindow, QObject* parent)
 	: QAbstractItemModel(parent)
 {
-	rootItem_ = new ConfigTreeItem("Item");
-	setupModelData(rootItem_);
+	rootItem_ = new ConfigTreeRootItem("root", mainWindow);
 }
 
 ConfigTreeModel::~ConfigTreeModel()
@@ -106,18 +108,8 @@ int ConfigTreeModel::columnCount(const QModelIndex& parent) const
 	return rootItem_->columnCount();
 }
 
-void ConfigTreeModel::setupModelData(ConfigTreeItem* parent)
+ConfigTreeItem* ConfigTreeModel::rootItem()
 {
-	for (int i = 0; i < 4; ++i)
-	{
-		ConfigTreeItem* iItem = new ConfigTreeItem(QString("Child%1").arg(i), parent);
-		parent->appendChild(iItem);
-		iItem->setStatus(static_cast<ConfigTreeItem::Status>(i));
-		for (int j = 0; j < 4; ++j)
-		{
-			ConfigTreeItem* jItem = new ConfigTreeItem(QString("Child%1%2").arg(i).arg(j), iItem);
-			jItem->setStatus(static_cast<ConfigTreeItem::Status>(j));
-			iItem->appendChild(jItem);
-		}
-	}
+	return rootItem_;
 }
+

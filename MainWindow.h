@@ -2,16 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QTreeWidget>
+#include <QTreeView>
 #include <QAction>
+#include <QStackedLayout>
 
 #include "ConfigSetupSettings.h"
 #include "Configuration.h"
 #include "ConfigTreeModel.h"
-
-namespace Ui {
-class MainWindow;
-}
 
 class MainWindow : public QMainWindow
 {
@@ -20,6 +17,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+	int registerWidget(QWidget* widget);
+	void displayWidget(QWidget* widget);
 
 protected:
   // Intercept close to offer save
@@ -51,12 +51,13 @@ private:
   QTreeView* tree();
 
 private:
-    Ui::MainWindow *ui_;
     QTreeView tree_;
     ConfigSetupSettings configSetupSettings_;
     Configuration configuration_;
     QMenu* viewMenu_;
 	ConfigTreeModel configTreeModel_;
+	QStackedLayout* stackedLayout_;
+	QMap<QWidget*, int> layoutMap_;
 };
 
 #endif // MAINWINDOW_H
