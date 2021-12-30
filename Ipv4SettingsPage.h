@@ -7,12 +7,13 @@
 #include <QPushButton>
 
 #include "DnsDataModel.h"
+#include "ConfigPage.h"
 
 namespace Ui {
   class Ipv4SettingsPage;
 }
 
-class Ipv4SettingsPage : public QWidget
+class Ipv4SettingsPage : public ConfigPage
 {
   Q_OBJECT
 

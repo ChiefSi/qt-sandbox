@@ -7,7 +7,7 @@
 #include "DnsItemDelegate.h"
 
 Ipv4SettingsPage::Ipv4SettingsPage(QWidget *parent) :
-  QWidget(parent),
+  ConfigPage("Ipv4", parent),
   ui(new Ui::Ipv4SettingsPage)
 {
   ui->setupUi(this);

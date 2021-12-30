@@ -6,7 +6,7 @@ ConfigPage::ConfigPage(const QString& name, QWidget* parent)
 {
 }
 
-void ConfigPage::onActivate()
+void ConfigPage::activate()
 {
 	auto* parent = ConfigTreeItem::parent();
 
@@ -14,9 +14,4 @@ void ConfigPage::onActivate()
 	{
 		parent->displayWidget(this);
 	}
-}
-
-void ConfigPage::displayWidget(QWidget* widget)
-{
-	// noop
 }

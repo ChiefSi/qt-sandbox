@@ -12,6 +12,5 @@ public:
 	ConfigPage(const QString& name, QWidget* parent = nullptr);
 	~ConfigPage() override = default;
 
-	void onActivate() override;
-	void displayWidget(QWidget* widget) override;
+	void activate() override;
 };

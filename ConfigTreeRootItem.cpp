@@ -8,11 +8,6 @@ ConfigTreeRootItem::ConfigTreeRootItem(const QString& name, MainWindow* mainWind
 {
 }
 
-void ConfigTreeRootItem::onActivate()
-{
-	// noop
-}
-
 void ConfigTreeRootItem::displayWidget(QWidget* widget)
 {
 	mainWindow_->displayWidget(widget);

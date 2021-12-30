@@ -10,7 +10,6 @@ public:
 	ConfigTreeRootItem(const QString& name, MainWindow* mainWindow);
 	~ConfigTreeRootItem() override = default;
 
-	void onActivate() override;
 	void displayWidget(QWidget* widget) override;
 
 private:

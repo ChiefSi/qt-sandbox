@@ -7,7 +7,8 @@ ConfigTreeItem::ConfigTreeItem(const QString& name)
 
 ConfigTreeItem::~ConfigTreeItem()
 {
-	qDeleteAll(childItems_);
+	// Do not delete the items - they are likely owned by other widgets... damn QT and ownership
+	//qDeleteAll(childItems_);
 }
 
 void ConfigTreeItem::appendChild(ConfigTreeItem* item)
@@ -83,7 +84,7 @@ void ConfigTreeItem::setParent(ConfigTreeItem* parent)
 	parent_ = parent;
 }
 
-void ConfigTreeItem::onActivate()
+void ConfigTreeItem::activate()
 {
 
 }

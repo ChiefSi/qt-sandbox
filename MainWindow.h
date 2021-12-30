@@ -9,6 +9,7 @@
 #include "ConfigSetupSettings.h"
 #include "Configuration.h"
 #include "ConfigTreeModel.h"
+#include "StackedWidgetManager.h"
 
 class MainWindow : public QMainWindow
 {
@@ -50,14 +51,15 @@ private:
 
   QTreeView* tree();
 
+  void createExampleConfigTree();
+
 private:
     QTreeView tree_;
     ConfigSetupSettings configSetupSettings_;
     Configuration configuration_;
     QMenu* viewMenu_;
 	ConfigTreeModel configTreeModel_;
-	QStackedLayout* stackedLayout_;
-	QMap<QWidget*, int> layoutMap_;
+	StackedWidgetManager widgetManager_;
 };
 
 #endif // MAINWINDOW_H

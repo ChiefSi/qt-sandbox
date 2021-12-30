@@ -10,6 +10,8 @@
 
 #include <QScreen>
 
+#include "ConfigSection.h"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
 	configTreeModel_(this, this)
@@ -30,30 +32,68 @@ MainWindow::MainWindow(QWidget *parent) :
     createDockWindows();
 
 	QWidget* main = new QWidget();
-	stackedLayout_ = new QStackedLayout(main);
-
+	auto* stackedWidget = widgetManager_.stackedWidget();
+	stackedWidget->setParent(main);
 	setCentralWidget(main);
+
+	createExampleConfigTree();
+
+	auto* selectionModel = tree_.selectionModel();
+	connect(&tree_, &QAbstractItemView::activated, this,
+		[](const QModelIndex& current)
+		{
+			if (current.isValid())
+			{
+				auto* item = static_cast<ConfigTreeItem*>(current.internalPointer());
+				std::cout << "Activate: " << item->name().toStdString() << std::endl;
+				item->activate();
+			}
+		});
 }
 
-int MainWindow::registerWidget(QWidget* widget)
+void MainWindow::createExampleConfigTree()
 {
-	int index = stackedLayout_->addWidget(widget);
-	layoutMap_.insert(widget, index);
-	return index;
+	auto* root = configTreeModel_.rootItem();
+	auto* network = new ConfigSection("Network");
+	root->appendChild(network);
+	{
+	auto* ipv41 = new Ipv4SettingsPage();
+	auto* ipv42 = new Ipv4SettingsPage();
+	auto* ipv43 = new Ipv4SettingsPage();
+	auto* ipv44 = new Ipv4SettingsPage();
+	auto* ipv45 = new Ipv4SettingsPage();
+	auto* ipv46 = new Ipv4SettingsPage();
+
+	network->appendChild(ipv41);
+	network->appendChild(ipv42);
+	network->appendChild(ipv43);
+	network->appendChild(ipv44);
+	network->appendChild(ipv45);
+	network->appendChild(ipv46);
+	}
+	auto* example = new ConfigSection("Example");
+	root->appendChild(example);
+	{
+	auto* ipv41 = new Ipv4SettingsPage();
+	auto* ipv42 = new Ipv4SettingsPage();
+	auto* ipv43 = new Ipv4SettingsPage();
+	auto* ipv44 = new Ipv4SettingsPage();
+	auto* ipv45 = new Ipv4SettingsPage();
+	auto* ipv46 = new Ipv4SettingsPage();
+
+	example->appendChild(ipv41);
+	example->appendChild(ipv42);
+	example->appendChild(ipv43);
+	example->appendChild(ipv44);
+	example->appendChild(ipv45);
+	example->appendChild(ipv46);
+	}
+
 }
 
 void MainWindow::displayWidget(QWidget* widget)
 {
-	auto it = layoutMap_.find(widget);
-	if (it == layoutMap_.end())
-	{
-		int index = registerWidget(widget);
-		stackedLayout_->setCurrentIndex(index);
-	}
-	else
-	{
-		stackedLayout_->setCurrentIndex(*it);
-	}
+	widgetManager_.display(widget);
 }
 
 void MainWindow::createDockWindows()

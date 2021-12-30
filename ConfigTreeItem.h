@@ -56,7 +56,7 @@ public:
 
 	void setStatus(const Status& status);
 
-	virtual void onActivate();
+	virtual void activate();
 	virtual void displayWidget(QWidget* widget);
 
 private:
