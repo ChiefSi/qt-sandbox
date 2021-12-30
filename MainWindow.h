@@ -4,12 +4,11 @@
 #include <QMainWindow>
 #include <QTreeView>
 #include <QAction>
-#include <QStackedLayout>
+#include <QStackedWidget>
 
 #include "ConfigSetupSettings.h"
 #include "Configuration.h"
 #include "ConfigTreeModel.h"
-#include "StackedWidgetManager.h"
 
 class MainWindow : public QMainWindow
 {
@@ -59,7 +58,7 @@ private:
     Configuration configuration_;
     QMenu* viewMenu_;
 	ConfigTreeModel configTreeModel_;
-	StackedWidgetManager widgetManager_;
+	QStackedWidget* stack_;
 };
 
 #endif // MAINWINDOW_H

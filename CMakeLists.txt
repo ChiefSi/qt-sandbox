@@ -28,7 +28,6 @@ set(HEADERS
   ConfigTreeRootItem.h
   ConfigPage.h
   ConfigSection.h
-  StackedWidgetManager.h
   )
 
 set(FORMS
@@ -50,7 +49,6 @@ set(SOURCES
   ConfigTreeRootItem.cpp
   ConfigPage.cpp
   ConfigSection.cpp
-  StackedWidgetManager.cpp
 )
 
 set(RESOURCES

@@ -64,6 +64,6 @@ private:
 
 	QVector<ConfigTreeItem*> childItems_;
 	QString name_;
-	Status status_;
+	Status status_ = Status::Unknown;
 	ConfigTreeItem* parent_ = nullptr;
 };
