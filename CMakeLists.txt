@@ -65,3 +65,6 @@ target_link_libraries(sandbox PUBLIC Qt5::Widgets)
 
 add_executable(qt-sandbox qt-sandbox.cpp)
 target_link_libraries(qt-sandbox PRIVATE sandbox)
+
+add_executable(test test.cpp)
+target_link_libraries(test PRIVATE sandbox)
