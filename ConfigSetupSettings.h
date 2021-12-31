@@ -11,7 +11,8 @@ struct ConfigSetupSettings
   int numLowInterfaces = 1;
 };
 
-inline std::ostream& operator<<(std::ostream& os, const ConfigSetupSettings& settings)
+inline std::ostream& operator<<(std::ostream& os,
+                                const ConfigSetupSettings& settings)
 {
   os << "ConfigSetupSettings:\n";
   os << "  High servers:    " << settings.numHighServers << '\n';
@@ -21,4 +22,4 @@ inline std::ostream& operator<<(std::ostream& os, const ConfigSetupSettings& set
   return os;
 }
 
-#endif // CONFIGSETUPSETTINGS_H
+#endif  // CONFIGSETUPSETTINGS_H

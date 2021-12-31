@@ -10,4 +10,4 @@ struct InterfaceSettings
   Ipv4Settings ipv4;
 };
 
-#endif // INTERFACESETTINGS_H
+#endif  // INTERFACESETTINGS_H

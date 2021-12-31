@@ -1,69 +1,80 @@
 #pragma once
 
 #include <QIcon>
+#include <QString>
 #include <QVariant>
 #include <QVector>
-#include <QString>
 
 class ConfigTreeItem
 {
 public:
-	enum class Status
-	{
-		Ok,
-		Warning,
-		Error,
-		Unknown
-	};
+  enum class Status
+  {
+    Ok,
+    Warning,
+    Error,
+    Unknown
+  };
 
-	static inline QString StatusToStr(const Status& status)
-	{
-		switch (status)
-		{
-			case Status::Ok: return "Ok";
-			case Status::Warning: return "Warning";
-			case Status::Error: return "Error";
-			default: return "Unknown";
-		}
-	}
+  static inline QString StatusToStr(const Status& status)
+  {
+    switch (status)
+    {
+      case Status::Ok:
+        return "Ok";
+      case Status::Warning:
+        return "Warning";
+      case Status::Error:
+        return "Error";
+      default:
+        return "Unknown";
+    }
+  }
 
-	static inline QVariant StatusToIcon(const Status& status)
-	{
-		switch (status)
-		{
-			case Status::Ok: return QIcon::fromTheme("face-smile");
-			case Status::Warning: return QIcon::fromTheme("dialog-warning");
-			case Status::Error: return QIcon::fromTheme("dialog-error");
-			default: return QVariant();
-		}
-	}
+  static inline QVariant StatusToIcon(const Status& status)
+  {
+    switch (status)
+    {
+      case Status::Ok:
+        return QIcon::fromTheme("face-smile");
+      case Status::Warning:
+        return QIcon::fromTheme("dialog-warning");
+      case Status::Error:
+        return QIcon::fromTheme("dialog-error");
+      default:
+        return QVariant();
+    }
+  }
 
-	explicit ConfigTreeItem(const QString& name);
-	virtual ~ConfigTreeItem();
+  explicit ConfigTreeItem(const QString& name);
+  virtual ~ConfigTreeItem();
 
-	void appendChild(ConfigTreeItem* item);
+  void appendChild(ConfigTreeItem* item);
 
-	ConfigTreeItem* child(int row);
-	int childCount() const;
-	int columnCount() const;
-	QVariant data(int column) const;
-	int row() const;
-	ConfigTreeItem* parent();
+  ConfigTreeItem* child(int row);
+  int childCount() const;
+  int columnCount() const;
+  QVariant data(int column) const;
+  int row() const;
+  ConfigTreeItem* parent();
 
-	QString name() const;
-	Status status() const;
-	QVariant icon() const;
+  QString name() const;
+  Status status() const;
+  QVariant icon() const;
 
-	void setStatus(const Status& status);
+  void setStatus(const Status& status);
 
-	virtual void activate();
-	virtual void displayWidget(QWidget* widget);
+  virtual void activate();
+  virtual void displayWidget(QWidget* widget);
+
+  QVector<ConfigTreeItem*> items();
+  void print();
 
 private:
-	void setParent(ConfigTreeItem* parent);
+  void setParent(ConfigTreeItem* parent);
 
-	QVector<ConfigTreeItem*> childItems_;
-	QString name_;
-	Status status_ = Status::Unknown;
-	ConfigTreeItem* parent_ = nullptr;
+  QVector<ConfigTreeItem*> childItems_;
+  QString name_;
+  Status status_ = Status::Unknown;
+  ConfigTreeItem* parent_ = nullptr;
 };

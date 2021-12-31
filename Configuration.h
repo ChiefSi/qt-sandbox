@@ -16,4 +16,4 @@ struct Configuration
   ServerMap lowServerMap;
 };
 
-#endif // CONFIGURATION_H
+#endif  // CONFIGURATION_H

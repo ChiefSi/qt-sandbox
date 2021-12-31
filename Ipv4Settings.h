@@ -3,8 +3,8 @@
 
 #include <ios>
 #include <ostream>
-#include <vector>
 #include <string>
+#include <vector>
 
 /**
  * @brief Represents a single Ipv4 address or route
@@ -39,7 +39,8 @@ inline std::ostream& operator<<(std::ostream& os, const Ipv4Settings& settings)
   os << "Address(es):\n";
   for (auto& entry : settings.addresses)
   {
-    os << entry.address << "/" << entry.prefix << " gw " << entry.gateway << '\n';
+    os << entry.address << "/" << entry.prefix << " gw " << entry.gateway
+       << '\n';
   }
   os << '\n';
 
@@ -54,11 +55,12 @@ inline std::ostream& operator<<(std::ostream& os, const Ipv4Settings& settings)
   os << "Routes: " << '\n';
   for (auto& entry : settings.routes)
   {
-    os << entry.address << "/" << entry.prefix << " via " << entry.gateway << '\n';
+    os << entry.address << "/" << entry.prefix << " via " << entry.gateway
+       << '\n';
   }
   os << '\n';
 
   return os;
 }
 
-#endif // IPV4SETTINGS_H
+#endif  // IPV4SETTINGS_H

@@ -28,6 +28,9 @@ set(HEADERS
   ConfigTreeRootItem.h
   ConfigPage.h
   ConfigSection.h
+  ExamplePage.h
+  AnotherPage.h
+  Form.h
   )
 
 set(FORMS
@@ -35,6 +38,9 @@ set(FORMS
   ConfigSetupDialog.ui
   EthernetSettingsPage.ui
   Ipv4SettingsPage.ui
+  ExamplePage.ui
+  AnotherPage.ui
+  Form.ui
   )
 
 set(SOURCES
@@ -49,6 +55,9 @@ set(SOURCES
   ConfigTreeRootItem.cpp
   ConfigPage.cpp
   ConfigSection.cpp
+  ExamplePage.cpp
+  AnotherPage.cpp
+  Form.cpp
 )
 
 set(RESOURCES

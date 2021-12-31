@@ -6,4 +6,4 @@ struct EthernetSettings
   uint32_t mtu;
 };
 
-#endif // ETHERNETSETTINGS_H
+#endif  // ETHERNETSETTINGS_H

@@ -10,4 +10,4 @@ public:
   virtual bool load(const QJsonObject& object) = 0;
 };
 
-#endif // JSONCONFIGURATION_H
+#endif  // JSONCONFIGURATION_H

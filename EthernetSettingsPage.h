@@ -3,11 +3,13 @@
 
 #include <QWidget>
 
-namespace Ui {
-  class EthernetSettingsPage;
+#include "ConfigPage.h"
+namespace Ui
+{
+class EthernetSettingsPage;
 }
 
-class EthernetSettingsPage : public QWidget
+class EthernetSettingsPage : public ConfigPage
 {
   Q_OBJECT
 
@@ -19,4 +21,4 @@ private:
   Ui::EthernetSettingsPage *ui;
 };
 
-#endif // ETHERNETSETTINGSPAGE_H
+#endif  // ETHERNETSETTINGSPAGE_H

@@ -1,104 +1,116 @@
 #include "MainWindow.h"
 
+#include <QScreen>
 #include <QtWidgets>
-
-#include "ConfigSetupDialog.h"
-
 #include <iostream>
 
+#include "AnotherPage.h"
+#include "ConfigSection.h"
+#include "ConfigSetupDialog.h"
+#include "EthernetSettingsPage.h"
+#include "ExamplePage.h"
+#include "Form.h"
 #include "Ipv4SettingsPage.h"
 
-#include <QScreen>
-
-#include "ConfigSection.h"
-
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-	configTreeModel_(this, this)
+MainWindow::MainWindow(QWidget* parent)
+    : QMainWindow(parent), configTreeModel_(this, this)
 {
-	QScreen* screen = QGuiApplication::primaryScreen();
-	auto s = screen->availableSize();
-	std::cout << s.width() << "x" << s.height() << std::endl;
+  QScreen* screen = QGuiApplication::primaryScreen();
+  auto s = screen->availableSize();
+  std::cout << s.width() << "x" << s.height() << std::endl;
 
-    // Setup page programatically rather than rely on content "hidden" in the UI xml
-    createActions();
-    createStatusBar();
+  // Setup page programatically rather than rely on content "hidden" in the UI
+  // xml
+  createActions();
+  createStatusBar();
 
-    // Settings should only need to apply to this top-level representation of the application
-    readSettings();
+  // Settings should only need to apply to this top-level representation of the
+  // application
+  readSettings();
 
-	tree_.setModel(&configTreeModel_);
+  tree_.setModel(&configTreeModel_);
 
-    createDockWindows();
+  createDockWindows();
 
-	createExampleConfigTree();
+  createExampleConfigTree();
 
-	stack_ = new QStackedWidget();
-	auto* b = new QPushButton("Hello");
-	setCentralWidget(stack_);
-	stack_->addWidget(b);
+  stack_ = new QStackedWidget();
+  auto* b = new QPushButton("Hello");
+  setCentralWidget(stack_);
+  stack_->addWidget(b);
 
-	auto* selectionModel = tree_.selectionModel();
-	connect(&tree_, &QAbstractItemView::activated, this,
-		[](const QModelIndex& current)
-		{
-			if (current.isValid())
-			{
-				auto* item = static_cast<ConfigTreeItem*>(current.internalPointer());
-				item->activate();
-			}
-		});
+  auto* selectionModel = tree_.selectionModel();
+  connect(selectionModel, &QItemSelectionModel::currentChanged, this,
+          [](const QModelIndex& current, const QModelIndex& /*previous*/)
+          {
+            if (current.isValid())
+            {
+              auto* item =
+                  static_cast<ConfigTreeItem*>(current.internalPointer());
+              item->activate();
+            }
+          });
 }
 
 void MainWindow::createExampleConfigTree()
 {
-	auto* root = configTreeModel_.rootItem();
-	// Testing nested sections
-	auto* a = new ConfigSection("A");
-	auto* b = new ConfigSection("B");
-	auto* i = new Ipv4SettingsPage();
-	b->appendChild(i);
-	a->appendChild(b);
-	root->appendChild(a);
-	auto* network = new ConfigSection("Network");
-	root->appendChild(network);
-	{
-		auto* ipv41 = new Ipv4SettingsPage();
-		auto* ipv42 = new Ipv4SettingsPage();
-		auto* ipv43 = new Ipv4SettingsPage();
+  auto* root = configTreeModel_.rootItem();
+  // Testing nested sections
+  auto* a = new ConfigSection("A");
+  auto* b = new ConfigSection("B");
+  auto* p = new ExamplePage();
+  auto* i = new Ipv4SettingsPage();
+  b->appendChild(i);
+  a->appendChild(b);
+  a->appendChild(p);
+  root->appendChild(a);
 
-		network->appendChild(ipv41);
-		network->appendChild(ipv42);
-		network->appendChild(ipv43);
-	}
+  auto* example = new ConfigSection("Example");
+  root->appendChild(example);
+  {
+    auto* ica = new ExamplePage();
+    auto* sides = new AnotherPage();
+    example->appendChild(ica);
+    example->appendChild(sides);
+  }
 
-	auto* example = new ConfigSection("Example");
-	root->appendChild(example);
-	{
-		auto* ipv41 = new Ipv4SettingsPage();
-		auto* ipv42 = new Ipv4SettingsPage();
-		auto* ipv43 = new Ipv4SettingsPage();
-		example->appendChild(ipv41);
-		example->appendChild(ipv42);
-		example->appendChild(ipv43);
-	}
+  auto* network = new ConfigSection("Network");
+  root->appendChild(network);
+  auto* ipv41 = new Ipv4SettingsPage();
+  network->appendChild(ipv41);
+  auto* ethernet = new EthernetSettingsPage();
+  ethernet->setStatus(ConfigTreeItem::Status::Error);
+  auto* ethernet1 = new EthernetSettingsPage();
+  network->appendChild(ethernet);
+  network->appendChild(ethernet1);
+
+  auto* first = new ConfigSection("Customer");
+
+  auto* second = new ConfigSection("Providence");
+  auto* second1 = new ConfigSection("Providence");
+  auto* second2 = new ConfigSection("Providence");
+  auto* second3 = new ConfigSection("Providence");
+  auto* f = new Form();
+  second->appendChild(f);
+  second->appendChild(second1);
+  second1->appendChild(second2);
+  second2->appendChild(second3);
+  first->appendChild(second);
+  root->appendChild(first);
 }
 
 void MainWindow::displayWidget(QWidget* widget)
 {
-	int index = stack_->indexOf(widget);
-	if (index == -1)
-	{
-		stack_->addWidget(widget);
-	}
+  int index = stack_->indexOf(widget);
+  if (index == -1)
+  {
+    stack_->addWidget(widget);
+  }
 
-	stack_->setCurrentWidget(widget);
+  stack_->setCurrentWidget(widget);
 }
 
-void MainWindow::createDockWindows()
-{
-  createTreeDock();
-}
+void MainWindow::createDockWindows() { createTreeDock(); }
 
 void MainWindow::createTreeDock()
 {
@@ -142,16 +154,11 @@ void MainWindow::populateConfiguration(const ConfigSetupSettings& settings)
   }
 }
 
-void MainWindow::createCentralWidget()
-{
-}
+void MainWindow::createCentralWidget() {}
 
+MainWindow::~MainWindow() {}
 
-MainWindow::~MainWindow()
-{
-}
-
-void MainWindow::closeEvent(QCloseEvent *event)
+void MainWindow::closeEvent(QCloseEvent* event)
 {
   if (maybeSave())
   {
@@ -190,11 +197,17 @@ void MainWindow::openConfiguration()
 
 bool MainWindow::saveConfiguration()
 {
-  QFileDialog dialog(this);
-  dialog.setWindowModality(Qt::WindowModal);
-  dialog.setAcceptMode(QFileDialog::AcceptSave);
-  if (dialog.exec() != QDialog::Accepted) return false;
-  return saveFile(dialog.selectedFiles().first());
+  /*
+QFileDialog dialog(this);
+dialog.setWindowModality(Qt::WindowModal);
+dialog.setAcceptMode(QFileDialog::AcceptSave);
+if (dialog.exec() != QDialog::Accepted) return false;
+return saveFile(dialog.selectedFiles().first());
+*/
+  for (auto* item : configTreeModel_.items())
+  {
+    item->print();
+  }
 }
 
 void MainWindow::about()
@@ -204,32 +217,38 @@ void MainWindow::about()
 
 void MainWindow::createActions()
 {
-  QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
-  QToolBar *fileToolBar = addToolBar(tr("File"));
-  //const QIcon newIcon = QIcon::fromTheme("document-new", QIcon(":/images/new.png"));
+  QMenu* fileMenu = menuBar()->addMenu(tr("&File"));
+  QToolBar* fileToolBar = addToolBar(tr("File"));
+  // const QIcon newIcon = QIcon::fromTheme("document-new",
+  // QIcon(":/images/new.png"));
   const QIcon newIcon = QIcon::fromTheme("document-new");
-  //const QIcon newIcon = this->style()->standardIcon(QStyle::SP_FileDialogNewFolder);
-  QAction *newAct = new QAction(newIcon, tr("&New"), this);
+  // const QIcon newIcon =
+  // this->style()->standardIcon(QStyle::SP_FileDialogNewFolder);
+  QAction* newAct = new QAction(newIcon, tr("&New"), this);
   newAct->setShortcuts(QKeySequence::New);
   newAct->setStatusTip(tr("New Configuration"));
   connect(newAct, &QAction::triggered, this, &MainWindow::newConfiguration);
   fileMenu->addAction(newAct);
   fileToolBar->addAction(newAct);
 
-  //const QIcon openIcon = QIcon::fromTheme("document-open", QIcon(":/images/open.png"));
+  // const QIcon openIcon = QIcon::fromTheme("document-open",
+  // QIcon(":/images/open.png"));
   const QIcon openIcon = QIcon::fromTheme("document-open");
-  //const QIcon openIcon = this->style()->standardIcon(QStyle::SP_DialogOpenButton);
-  QAction *openAct = new QAction(openIcon, tr("&Open..."), this);
+  // const QIcon openIcon =
+  // this->style()->standardIcon(QStyle::SP_DialogOpenButton);
+  QAction* openAct = new QAction(openIcon, tr("&Open..."), this);
   openAct->setShortcuts(QKeySequence::Open);
   openAct->setStatusTip(tr("Open Configuration"));
   connect(openAct, &QAction::triggered, this, &MainWindow::openConfiguration);
   fileMenu->addAction(openAct);
   fileToolBar->addAction(openAct);
 
-  //const QIcon saveIcon = QIcon::fromTheme("document-save", QIcon(":/images/save.png"));
+  // const QIcon saveIcon = QIcon::fromTheme("document-save",
+  // QIcon(":/images/save.png"));
   const QIcon saveIcon = QIcon::fromTheme("document-save");
-  //const QIcon saveIcon = this->style()->standardIcon(QStyle::SP_DialogSaveButton);
-  QAction *saveAct = new QAction(saveIcon, tr("&Save"), this);
+  // const QIcon saveIcon =
+  // this->style()->standardIcon(QStyle::SP_DialogSaveButton);
+  QAction* saveAct = new QAction(saveIcon, tr("&Save"), this);
   saveAct->setShortcuts(QKeySequence::Save);
   saveAct->setStatusTip(tr("Save the document to disk"));
   connect(saveAct, &QAction::triggered, this, &MainWindow::saveConfiguration);
@@ -239,19 +258,19 @@ void MainWindow::createActions()
   fileMenu->addSeparator();
 
   const QIcon exitIcon = QIcon::fromTheme("application-exit");
-  QAction *exitAct =
+  QAction* exitAct =
       fileMenu->addAction(exitIcon, tr("E&xit"), this, &QWidget::close);
   exitAct->setShortcuts(QKeySequence::Quit);
   exitAct->setStatusTip(tr("Exit the application"));
 
   viewMenu_ = menuBar()->addMenu(tr("&View"));
 
-  QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
-  QAction *aboutAct =
+  QMenu* helpMenu = menuBar()->addMenu(tr("&Help"));
+  QAction* aboutAct =
       helpMenu->addAction(tr("&About"), this, &MainWindow::about);
   aboutAct->setStatusTip(tr("Show the application's About box"));
 
-  QAction *aboutQtAct =
+  QAction* aboutQtAct =
       helpMenu->addAction(tr("About &Qt"), qApp, &QApplication::aboutQt);
   aboutQtAct->setStatusTip(tr("Show the Qt library's About box"));
 }
@@ -287,28 +306,28 @@ void MainWindow::writeSettings()
 
 bool MainWindow::maybeSave()
 {
-    /*
-  const QMessageBox::StandardButton ret = QMessageBox::warning(
-      this, tr("Application"),
-      tr("TODO Check if unsaved modifications...\nDo you want to save your "
-         "changes?"),
-      QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-  switch (ret)
-  {
-    case QMessageBox::Save:
-      return saveConfiguration();
-    case QMessageBox::Cancel:
-      return false;
-    default:
-      break;
-  }
-
-  return true;
-  */
-    return true;
+  /*
+const QMessageBox::StandardButton ret = QMessageBox::warning(
+    this, tr("Application"),
+    tr("TODO Check if unsaved modifications...\nDo you want to save your "
+       "changes?"),
+    QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+switch (ret)
+{
+  case QMessageBox::Save:
+    return saveConfiguration();
+  case QMessageBox::Cancel:
+    return false;
+  default:
+    break;
 }
 
-void MainWindow::loadFile(const QString &fileName)
+return true;
+*/
+  return true;
+}
+
+void MainWindow::loadFile(const QString& fileName)
 {
   QFile file(fileName);
   if (!file.open(QFile::ReadOnly | QFile::Text))
@@ -331,7 +350,7 @@ void MainWindow::loadFile(const QString &fileName)
   statusBar()->showMessage(tr("File loaded"), 2000);
 }
 
-bool MainWindow::saveFile(const QString &fileName)
+bool MainWindow::saveFile(const QString& fileName)
 {
   QFile file(fileName);
   if (!file.open(QFile::WriteOnly | QFile::Text))
@@ -355,7 +374,4 @@ bool MainWindow::saveFile(const QString &fileName)
   return true;
 }
 
-QTreeView* MainWindow::tree()
-{
-  return &tree_;
-}
+QTreeView* MainWindow::tree() { return &tree_; }

@@ -1,13 +1,12 @@
 #include "DnsDataModel.h"
-#include <iostream>
+
+#include <QHeaderView>
 #include <QIcon>
 #include <QPushButton>
-#include <QHeaderView>
+#include <iostream>
 
 DnsDataModel::DnsDataModel(QObject* parent)
-  : QAbstractTableModel(parent)
-  , tableView_(nullptr)
-  , delegate_(this)
+    : QAbstractTableModel(parent), tableView_(nullptr), delegate_(this)
 {
   connect(this, &DnsDataModel::dnsDataChanged, this, &DnsDataModel::redrawView);
 }
@@ -36,12 +35,15 @@ QVariant DnsDataModel::data(const QModelIndex& index, int role) const
 {
   switch (role)
   {
-    case Qt::DisplayRole: return getDisplayData(index);
-    default: return QVariant();
+    case Qt::DisplayRole:
+      return getDisplayData(index);
+    default:
+      return QVariant();
   }
 }
 
-QVariant DnsDataModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant DnsDataModel::headerData(int section, Qt::Orientation orientation,
+                                  int role) const
 {
   if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
   {
@@ -79,7 +81,8 @@ Qt::ItemFlags DnsDataModel::flags(const QModelIndex& index) const
   return QAbstractItemModel::flags(index);
 }
 
-bool DnsDataModel::setData(const QModelIndex& index, const QVariant& value, int role)
+bool DnsDataModel::setData(const QModelIndex& index, const QVariant& value,
+                           int role)
 {
   // Can only set data for first column
   if (role == Qt::EditRole && index.column() == 0)
@@ -108,7 +111,8 @@ void DnsDataModel::removeServer(int row)
   removeRow(row);
   endRemoveRows();
 
-  // Reset focus into the table (presumably the now-removed button was previously in focus)
+  // Reset focus into the table (presumably the now-removed button was
+  // previously in focus)
   tableView_->setFocus();
 
   emit dnsDataChanged();
@@ -131,10 +135,7 @@ void DnsDataModel::redrawView()
     removeButton->setIcon(QIcon::fromTheme("window-close"));
 
     connect(removeButton, &QPushButton::clicked,
-      [&, r = row](const bool /*state*/)
-      {
-        removeServer(r);
-      });
+            [&, r = row](const bool /*state*/) { removeServer(r); });
     // Assign button to cell
     tableView_->setIndexWidget(index(row, columnCount() - 1), removeButton);
   }

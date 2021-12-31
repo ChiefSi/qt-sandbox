@@ -10,10 +10,12 @@ class ConfigTreeItemDelegate : public QStyledItemDelegate
 public:
   ConfigTreeItemDelegate(ConfigTreeModel* model = nullptr);
 
-  void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
-  QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+  void paint(QPainter* painter, const QStyleOptionViewItem& option,
+             const QModelIndex& index) const override;
+  QSize sizeHint(const QStyleOptionViewItem& option,
+                 const QModelIndex& index) const override;
 
   ConfigTreeModel* model_;
 };
 
-#endif // CONFIGTREEITEMDELEGATE_H
+#endif  // CONFIGTREEITEMDELEGATE_H

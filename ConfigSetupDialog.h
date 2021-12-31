@@ -5,8 +5,9 @@
 
 #include "ConfigSetupSettings.h"
 
-namespace Ui {
-  class ConfigSetupDialog;
+namespace Ui
+{
+class ConfigSetupDialog;
 }
 
 class ConfigSetupDialog : public QDialog
@@ -17,7 +18,7 @@ public:
   explicit ConfigSetupDialog(QWidget *parent = 0);
   ~ConfigSetupDialog();
 
-  ConfigSetupSettings& settings();
+  ConfigSetupSettings &settings();
 private slots:
   void on_buttonBox_accepted();
   void on_buttonBox_rejected();
@@ -27,4 +28,4 @@ private:
   ConfigSetupSettings settings_;
 };
 
-#endif // CONFIGSETUPDIALOG_H
+#endif  // CONFIGSETUPDIALOG_H

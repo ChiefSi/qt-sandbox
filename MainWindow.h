@@ -1,29 +1,29 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
-#include <QTreeView>
 #include <QAction>
+#include <QMainWindow>
 #include <QStackedWidget>
+#include <QTreeView>
 
 #include "ConfigSetupSettings.h"
-#include "Configuration.h"
 #include "ConfigTreeModel.h"
+#include "Configuration.h"
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+  explicit MainWindow(QWidget* parent = 0);
+  ~MainWindow();
 
-	int registerWidget(QWidget* widget);
-	void displayWidget(QWidget* widget);
+  int registerWidget(QWidget* widget);
+  void displayWidget(QWidget* widget);
 
 protected:
   // Intercept close to offer save
-  void closeEvent(QCloseEvent *event) override;
+  void closeEvent(QCloseEvent* event) override;
 
   // Buttons/Menu items
 private slots:
@@ -45,20 +45,20 @@ private:
   void writeSettings();
 
   bool maybeSave();
-  void loadFile(const QString &fileName);
-  bool saveFile(const QString &fileName);
+  void loadFile(const QString& fileName);
+  bool saveFile(const QString& fileName);
 
   QTreeView* tree();
 
   void createExampleConfigTree();
 
 private:
-    QTreeView tree_;
-    ConfigSetupSettings configSetupSettings_;
-    Configuration configuration_;
-    QMenu* viewMenu_;
-	ConfigTreeModel configTreeModel_;
-	QStackedWidget* stack_;
+  QTreeView tree_;
+  ConfigSetupSettings configSetupSettings_;
+  Configuration configuration_;
+  QMenu* viewMenu_;
+  ConfigTreeModel configTreeModel_;
+  QStackedWidget* stack_;
 };
 
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H

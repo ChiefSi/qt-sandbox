@@ -7,8 +7,8 @@
 class ConfigPage : public QWidget, public ConfigTreeItem
 {
 public:
-	ConfigPage(const QString& name, QWidget* parent = nullptr);
-	~ConfigPage() override = default;
+  ConfigPage(const QString& name, QWidget* parent = nullptr);
+  ~ConfigPage() override = default;
 
-	void activate() override;
+  void activate() override;
 };

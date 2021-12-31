@@ -1,16 +1,17 @@
 #ifndef IPV4SETTINGSPAGE_H
 #define IPV4SETTINGSPAGE_H
 
-#include <QWidget>
+#include <QPushButton>
 #include <QStandardItemModel>
 #include <QTableView>
-#include <QPushButton>
+#include <QWidget>
 
-#include "DnsDataModel.h"
 #include "ConfigPage.h"
+#include "DnsDataModel.h"
 
-namespace Ui {
-  class Ipv4SettingsPage;
+namespace Ui
+{
+class Ipv4SettingsPage;
 }
 
 class Ipv4SettingsPage : public ConfigPage
@@ -18,7 +19,7 @@ class Ipv4SettingsPage : public ConfigPage
   Q_OBJECT
 
 public:
-  explicit Ipv4SettingsPage(QWidget *parent = 0);
+  explicit Ipv4SettingsPage(QWidget* parent = 0);
   ~Ipv4SettingsPage();
 
 private slots:
@@ -32,8 +33,8 @@ private:
   void redrawTableView(QTableView* view);
   void setMinimalTableView(QTableView* view);
 
-  Ui::Ipv4SettingsPage *ui;
+  Ui::Ipv4SettingsPage* ui;
   DnsDataModel dnsDataModel_;
 };
 
-#endif // IPV4SETTINGSPAGE_H
+#endif  // IPV4SETTINGSPAGE_H

@@ -1,20 +1,24 @@
 #pragma once
 
-#include "ConfigTreeItem.h"
-
 #include <QStackedWidget>
+
+#include "ConfigPage.h"
+#include "ConfigTreeItem.h"
 
 class ConfigSection : public QWidget, public ConfigTreeItem
 {
-	Q_OBJECT
+  Q_OBJECT
 
 public:
-	explicit ConfigSection(const QString& name, QWidget* parent = nullptr);
-	~ConfigSection() override = default;
+  explicit ConfigSection(const QString& name, QWidget* parent = nullptr);
+  ~ConfigSection() override = default;
 
-	void activate() override;
-	void displayWidget(QWidget* widget) override;
+  void activate() override;
+  void displayWidget(QWidget* widget) override;
+
+  void appendChild(ConfigPage* page);
+  void appendChild(ConfigSection* section);
 
 private:
-	QStackedWidget* stack_;
+  QStackedWidget* stack_;
 };

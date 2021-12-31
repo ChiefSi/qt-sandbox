@@ -1,18 +1,19 @@
 #include "Ipv4SettingsPage.h"
+
+#include <QPushButton>
+#include <QStandardItem>
+#include <iostream>
+
+#include "DnsItemDelegate.h"
 #include "ui_Ipv4SettingsPage.h"
 
-#include <iostream>
-#include <QStandardItem>
-#include <QPushButton>
-#include "DnsItemDelegate.h"
-
-Ipv4SettingsPage::Ipv4SettingsPage(QWidget *parent) :
-  ConfigPage("Ipv4", parent),
-  ui(new Ui::Ipv4SettingsPage)
+Ipv4SettingsPage::Ipv4SettingsPage(QWidget* parent)
+    : ConfigPage("Ipv4", parent), ui(new Ui::Ipv4SettingsPage)
 {
   ui->setupUi(this);
-//  dnsDataModel_.setTableView(ui->dnsTableView);
-//  connect(&dnsDataModel_, &DnsDataModel::dnsDataChanged, [&](){ redrawTableView(ui->dnsTableView); });
+  //  dnsDataModel_.setTableView(ui->dnsTableView);
+  //  connect(&dnsDataModel_, &DnsDataModel::dnsDataChanged, [&](){
+  //  redrawTableView(ui->dnsTableView); });
 
   ui->dnsTableView->setModel(&dnsDataModel_);
 
@@ -23,19 +24,16 @@ Ipv4SettingsPage::Ipv4SettingsPage(QWidget *parent) :
   dnsDataModel_.setTableView(ui->dnsTableView);
 }
 
-Ipv4SettingsPage::~Ipv4SettingsPage()
-{
-  delete ui;
-}
+Ipv4SettingsPage::~Ipv4SettingsPage() { delete ui; }
 
 void Ipv4SettingsPage::on_methodAutomatic_clicked()
 {
-    std::cout << __func__ << std::endl;
+  std::cout << __func__ << std::endl;
 }
 
 void Ipv4SettingsPage::on_methodManual_clicked()
 {
-    std::cout << __func__ << std::endl;
+  std::cout << __func__ << std::endl;
 }
 
 void Ipv4SettingsPage::on_methodDisabled_clicked()
@@ -103,5 +101,5 @@ void Ipv4SettingsPage::setMinimalTableView(QTableView* view)
   view->horizontalHeader()->setStyleSheet(style);
 
   // Set the fixed size based on content
-  //redrawTableView(view);
+  // redrawTableView(view);
 }

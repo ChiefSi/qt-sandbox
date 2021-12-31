@@ -12,4 +12,4 @@ struct ServerSettings
   InterfaceMap interfaceMap;
 };
 
-#endif // SERVERSETTINGS_H
+#endif  // SERVERSETTINGS_H

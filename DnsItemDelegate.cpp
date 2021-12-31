@@ -5,14 +5,14 @@
 #include <QTableView>
 #include <iostream>
 DnsItemDelegate::DnsItemDelegate(QAbstractTableModel* model)
-  : QStyledItemDelegate(model)
-  , model_(model)
+    : QStyledItemDelegate(model), model_(model)
 {
 }
 
-void DnsItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
+void DnsItemDelegate::paint(QPainter* painter,
+                            const QStyleOptionViewItem& option,
+                            const QModelIndex& index) const
 {
-
   // Draw default painter background grid in all columns except last
   if (index.column() != model_->columnCount() - 1)
   {
@@ -27,5 +27,4 @@ void DnsItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& optio
 
   // Render as normal assuming no visible grid
   QStyledItemDelegate::paint(painter, option, index);
-
 }

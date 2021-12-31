@@ -1,7 +1,7 @@
 #include <QApplication>
 #include <QtWidgets>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   Q_INIT_RESOURCE(application);
 
