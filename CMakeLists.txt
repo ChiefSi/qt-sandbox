@@ -75,3 +75,6 @@ target_link_libraries(qt-sandbox PRIVATE sandbox)
 
 add_executable(test test.cpp)
 target_link_libraries(test PRIVATE sandbox)
+
+add_executable(delegate-table delegate-table.cpp StructTableModel.cpp)
+target_link_libraries(delegate-table PRIVATE Qt5::Widgets)
